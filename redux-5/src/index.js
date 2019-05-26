@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware} from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { add, reduce } from './actions'
+import { list, titleChange, promiseAction } from './actions'
 import { rootReducer } from './reducers'
 import promise from 'redux-promise'
 
@@ -20,12 +20,12 @@ addElement.onclick = () => {
         return
     }
     let value = inputElement.value
-    store.dispatch(add(value))
+    store.dispatch(list.add(value))
     inputElement.value = ""
 }
 
 reduceElement.onclick = () => {
-    store.dispatch(reduce())
+    store.dispatch(list.reduce())
 }
 
 function updateList() {
@@ -44,4 +44,17 @@ function updateList() {
         li.innerText = item.text
         ul.appendChild(li)
     });
+}
+
+
+const showLabel = document.getElementById('show')
+const showBtn = document.getElementById('showBtn')
+showBtn.onclick = () => {
+    store.dispatch(titleChange())
+    showLabel.innerText = store.getState().titleFilter ? "显示" : "隐藏"
+}
+
+const promiseBtn = document.getElementById('promise')
+promiseBtn.onclick = () => {
+    store.dispatch(promiseAction(parseInt(Math.random() * 10)))
 }
